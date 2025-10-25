@@ -1,6 +1,6 @@
 -- Airbnb Database Schema (Task 2)
--- Author: [Your Name]
--- Date: [Current Date]
+-- Author: Aicha Lahnite
+-- Date: 25/10/2025
 -- Description: SQL schema defining tables, keys, and constraints for the Airbnb database.
 
 -- Drop existing tables (for safety in development)
