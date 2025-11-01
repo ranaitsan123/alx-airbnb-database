@@ -4,10 +4,10 @@
 -- Description: SQL schema defining tables, keys, and constraints for the Airbnb database.
 
 -- Drop existing tables (for safety in development)
-DROP TABLE IF EXISTS Message, Review, Payment, Booking, Property, User CASCADE;
+DROP TABLE IF EXISTS Message, Review, Payment, Booking, Property, "User" CASCADE;
 
 -- 1. User Table
-CREATE TABLE User (
+CREATE TABLE "User" (
     user_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE User (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_user_email ON User(email);
+CREATE INDEX idx_user_email ON "User"(email);
 
 -- 2. Property Table
 CREATE TABLE Property (
@@ -30,7 +30,7 @@ CREATE TABLE Property (
     pricepernight DECIMAL(10,2) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (host_id) REFERENCES User(user_id) ON DELETE CASCADE
+    FOREIGN KEY (host_id) REFERENCES "User"(user_id) ON DELETE CASCADE
 );
 
 CREATE INDEX idx_property_host_id ON Property(host_id);
@@ -46,7 +46,7 @@ CREATE TABLE Booking (
     status VARCHAR(20) CHECK (status IN ('pending', 'confirmed', 'canceled')) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (property_id) REFERENCES Property(property_id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES User(user_id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES "User"(user_id) ON DELETE CASCADE
 );
 
 CREATE INDEX idx_booking_property_id ON Booking(property_id);
@@ -73,7 +73,7 @@ CREATE TABLE Review (
     comment TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (property_id) REFERENCES Property(property_id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES User(user_id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES "User"(user_id) ON DELETE CASCADE
 );
 
 CREATE INDEX idx_review_property_id ON Review(property_id);
@@ -86,8 +86,8 @@ CREATE TABLE Message (
     recipient_id UUID NOT NULL,
     message_body TEXT NOT NULL,
     sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (sender_id) REFERENCES User(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (recipient_id) REFERENCES User(user_id) ON DELETE CASCADE
+    FOREIGN KEY (sender_id) REFERENCES "User"(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (recipient_id) REFERENCES "User"(user_id) ON DELETE CASCADE
 );
 
 CREATE INDEX idx_message_sender_id ON Message(sender_id);
